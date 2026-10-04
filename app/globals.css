@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Design tokens ───────────────────────── */
+@theme {
+  --color-paper: #f4efe6;
+  --color-paper-2: #ebe4d7;
+  --color-card: #fbf8f2;
+  --color-ink: #1c211d;
+  --color-ink-2: #535850;
+  --color-line: #dcd3c3;
+  --color-line-strong: #c7bca8;
+
+  --color-moss: #3b6346;
+  --color-moss-hover: #2f5239;
+  --color-moss-soft: #e1e9dd;
+  --color-moss-deep: #1e3226;
+  --color-night: #121813;
+  --color-night-2: #1b231d;
+
+  --color-ember: #a3532a;
+  --color-ember-soft: #f3e2d4;
+  --color-ok: #2c7548;
+  --color-ok-soft: #dfeee3;
+  --color-warn: #8c5a0f;
+  --color-warn-soft: #f6ead2;
+  --color-danger: #a33b2e;
+  --color-danger-soft: #f6e1dc;
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-literata), Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Menlo, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-soft: 0 1px 2px rgb(28 33 29 / 0.05), 0 6px 18px rgb(28 33 29 / 0.05);
+  --shadow-lift: 0 2px 4px rgb(28 33 29 / 0.06), 0 14px 32px rgb(28 33 29 / 0.09);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 88px;
+  }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-moss-soft); color: var(--color-ink); }
+
+  :focus-visible {
+    outline: 2px solid var(--color-moss);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .on-dark :focus-visible { outline-color: #e9dcc4; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ───────────────────────── Components ───────────────────────── */
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10;
+  }
+  .container-prose {
+    @apply mx-auto w-full max-w-[720px] px-5 sm:px-8;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[13px] font-medium uppercase tracking-[0.12em] text-ink-2;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 text-[15px] font-semibold whitespace-nowrap select-none;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s var(--ease-out-soft), box-shadow 0.2s;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { @apply bg-moss text-white hover:bg-moss-hover; box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.18); }
+  .btn-secondary { @apply border border-line-strong bg-card text-ink hover:border-ink/40 hover:bg-white; }
+  .btn-ghost { @apply text-ink hover:bg-paper-2; }
+  .btn-light { @apply bg-[#f4efe6] text-ink hover:bg-white; box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.12); }
+  .btn-outline-light { @apply border border-white/35 text-white hover:border-white/70 hover:bg-white/10; }
+  .btn-sm { @apply min-h-9 px-3.5 text-sm; }
+
+  /* Cards */
+  .card {
+    @apply rounded-lg border border-line bg-card;
+  }
+  .card-link {
+    @apply rounded-lg border border-line bg-card;
+    transition: border-color 0.25s, box-shadow 0.3s var(--ease-out-soft), transform 0.3s var(--ease-out-soft);
+  }
+  .card-link:hover { @apply border-line-strong; box-shadow: var(--shadow-lift); transform: translateY(-2px); }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-sm px-2 py-0.5 font-mono text-[12px] font-medium uppercase tracking-[0.06em];
+  }
+
+  /* Form */
+  .field-label { @apply mb-1.5 block text-sm font-semibold text-ink; }
+  .field {
+    @apply block min-h-11 w-full rounded-md border border-line-strong bg-card px-3.5 py-2.5 text-[15px] text-ink placeholder:text-ink-2/70;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field:focus { outline: none; border-color: var(--color-moss); box-shadow: 0 0 0 3px rgb(59 99 70 / 0.18); }
+  .field[aria-invalid="true"] { border-color: var(--color-danger); }
+
+  /* Long-form text */
+  .prose-site { @apply text-[17px] leading-[1.75] text-ink; }
+  .prose-site > * + * { margin-top: 1.1em; }
+  .prose-site h2 { @apply mt-12 text-[26px]; }
+  .prose-site ul { @apply list-none space-y-2 pl-0; }
+  .prose-site ul li { @apply relative pl-6; }
+  .prose-site ul li::before { content: ""; @apply absolute top-[0.72em] left-0 size-2 bg-moss; }
+  .prose-site a { @apply text-moss underline decoration-moss/40 underline-offset-4 hover:decoration-moss; }
+
+  /* Signature: stepped pixel divider (used sparingly) */
+  .pixel-rule {
+    height: 8px;
+    background:
+      linear-gradient(90deg, var(--color-moss) 0 8px, transparent 8px 16px, var(--color-moss) 16px 24px) 0 0 / 24px 8px no-repeat,
+      linear-gradient(var(--color-line), var(--color-line)) 32px 50% / calc(100% - 32px) 1px no-repeat;
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-1.5 font-semibold text-moss;
+  }
+  .link-arrow svg { transition: transform 0.25s var(--ease-out-soft); }
+  .link-arrow:hover svg { transform: translateX(3px); }
+}
+
+/* ───────────────────────── Motion ───────────────────────── */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.page-enter { animation: page-in 0.5s var(--ease-out-soft) both; }
+
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s var(--ease-out-soft), transform 0.7s var(--ease-out-soft); }
+.reveal.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+.no-js .reveal { opacity: 1; transform: none; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scale-in { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 0 rgb(44 117 72 / 0.45); } 50% { box-shadow: 0 0 0 5px rgb(44 117 72 / 0); } }
+.dot-live { animation: pulse-dot 2.4s ease-in-out 3; }
